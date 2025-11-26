@@ -6,13 +6,23 @@ module.exports = {
   theme: {
     extend: {
       colors: {
-        // Electric Orange theme tokens (can be used later for components)
+        // Legacy direct colors (kept to not break prior usage)
         primary: '#F97316',
         secondary: '#10B981',
         success: '#10B981',
         error: '#EF4444',
         background: '#000000',
-        surface: '#1F2937'
+        surface: '#1F2937',
+        // Electric Orange CSS variable-driven palette
+        eo: {
+          primary: 'var(--eo-primary)',
+          secondary: 'var(--eo-secondary)',
+          success: 'var(--eo-success)',
+          error: 'var(--eo-error)',
+          bg: 'var(--eo-bg)',
+          surface: 'var(--eo-surface)',
+          text: 'var(--eo-text)'
+        }
       }
     }
   },

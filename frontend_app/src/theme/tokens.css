@@ -1,0 +1,20 @@
+:root {
+  /* Electric Orange Theme Tokens */
+  --eo-primary: #F97316;  /* Electric Orange */
+  --eo-secondary: #10B981; /* Emerald */
+  --eo-success: #10B981;   /* Success (Emerald) */
+  --eo-error: #EF4444;     /* Red-500 */
+  --eo-bg: #000000;        /* Black background */
+  --eo-surface: #1F2937;   /* Slate-800 surface */
+  --eo-text: #FFFFFF;      /* White text */
+}
+
+/* Optional utility bridge classes (useful until full Tailwind adoption) */
+.eo-bg { background-color: var(--eo-bg); }
+.eo-surface { background-color: var(--eo-surface); }
+.eo-text { color: var(--eo-text); }
+.eo-primary { color: var(--eo-primary); }
+.eo-secondary { color: var(--eo-secondary); }
+.eo-success { color: var(--eo-success); }
+.eo-error { color: var(--eo-error); }
+.eo-border { border-color: var(--eo-surface); }
