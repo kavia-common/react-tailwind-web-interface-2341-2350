@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar';
+import Carousel from './components/Carousel';
 
 // PUBLIC_INTERFACE
 function App() {
@@ -21,6 +22,11 @@ function App() {
     <div className="App">
       <Navbar />
       <main id="main-content">
+        {/* Carousel section below the navbar */}
+        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+          <Carousel className="h-full" />
+        </div>
+
         <header className="App-header">
           <button 
             className="theme-toggle" 
