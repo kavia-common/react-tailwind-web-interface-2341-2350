@@ -1,57 +1,38 @@
-import React, { useState, useEffect } from 'react';
-import logo from './logo.svg';
+import React from 'react';
 import './App.css';
 import Navbar from './components/Navbar';
 import Carousel from './components/Carousel';
 import Footer from './components/Footer';
 
-// PUBLIC_INTERFACE
+/**
+ * PUBLIC_INTERFACE
+ * App entry component integrating Navbar (fixed), Carousel, and Footer.
+ * Ensures:
+ * - Offset spacer for fixed navbar handled in Navbar itself (h-16).
+ * - Main content uses min-h-screen minus footer height via flex layout.
+ * - Container spacing uses Tailwind utility classes.
+ */
 function App() {
-  const [theme, setTheme] = useState('light');
-
-  // Effect to apply theme to document element
-  useEffect(() => {
-    document.documentElement.setAttribute('data-theme', theme);
-  }, [theme]);
-
-  // PUBLIC_INTERFACE
-  const toggleTheme = () => {
-    setTheme(prevTheme => prevTheme === 'light' ? 'dark' : 'light');
-  };
-
   return (
-    <div className="App">
+    <div className="min-h-screen flex flex-col bg-eo-bg text-eo-text">
       <Navbar />
-      <main id="main-content">
-        {/* Carousel section below the navbar */}
-        <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
+      <main id="main-content" className="flex-1">
+        {/* Hero/Carousel section */}
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-6">
           <Carousel className="h-full" />
-        </div>
+        </section>
 
-        <header className="App-header">
-          <button 
-            className="theme-toggle" 
-            onClick={toggleTheme}
-            aria-label={`Switch to ${theme === 'light' ? 'dark' : 'light'} mode`}
-          >
-            {theme === 'light' ? '🌙 Dark' : '☀️ Light'}
-          </button>
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
+        {/* Example content area to demonstrate spacing under fixed navbar */}
+        <section className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
+          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight">
+            Welcome to Electric Orange
+          </h1>
+          <p className="mt-3 text-white/80 max-w-2xl">
+            A bold, high-contrast theme powered by React and Tailwind. Explore
+            the components above and enjoy a clean, accessible layout with a fixed
+            navbar, responsive carousel, and footer.
           </p>
-          <p>
-            Current theme: <strong>{theme}</strong>
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        </section>
       </main>
       <Footer />
     </div>
