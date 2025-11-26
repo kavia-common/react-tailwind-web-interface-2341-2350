@@ -92,7 +92,8 @@ export default function Navbar() {
       {/* Skip to content for keyboard users */}
       <a
         href="#main-content"
-        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-eo-primary focus:text-eo-text focus:px-3 focus:py-2 focus:rounded-md focus:outline-none"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:px-3 focus:py-2 focus:rounded-md focus:outline-none"
+        style={{ backgroundImage: 'var(--eo-primary-gradient)', color: 'var(--eo-text)' }}
       >
         Skip to main content
       </a>
@@ -106,9 +107,19 @@ export default function Navbar() {
           <div className="flex h-16 items-center justify-between">
             {/* Brand */}
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-md bg-eo-primary/90 ring-1 ring-white/10 shadow shadow-orange-500/30" aria-hidden="true" />
+              <div
+                className="h-8 w-8 rounded-md ring-1 ring-white/10 shadow shadow-black/40"
+                aria-hidden="true"
+                style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
+              />
               <span className="text-lg font-bold tracking-wide">
-                <span className="text-eo-primary">Electric</span> Orange
+                <span
+                  className="bg-clip-text text-transparent"
+                  style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
+                >
+                  Electric
+                </span>{' '}
+                Orange
               </span>
             </div>
 
@@ -119,7 +130,7 @@ export default function Navbar() {
                   <li key={item.href}>
                     <a
                       href={item.href}
-                      className="text-sm font-medium text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-orange-500 focus-visible:ring-offset-black transition-colors"
+                      className="text-sm font-medium text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(24,64,160,0.9)] focus-visible:ring-offset-black transition-colors"
                     >
                       {item.label}
                     </a>
@@ -132,13 +143,14 @@ export default function Navbar() {
                     ref={servicesBtnRef}
                     id="services-button"
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-sm font-medium text-white/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                     aria-haspopup="menu"
                     aria-expanded={servicesOpen}
                     aria-controls="services-menu"
                     onClick={() => setServicesOpen((v) => !v)}
                     onMouseEnter={() => setServicesOpen(true)}
                     onFocus={() => setServicesOpen(true)}
+                    style={{ backgroundImage: servicesOpen ? 'var(--eo-primary-gradient)' : 'none', backgroundColor: servicesOpen ? 'transparent' : 'transparent' }}
                   >
                     Services
                     <svg
@@ -168,11 +180,34 @@ export default function Navbar() {
                           key={s.href}
                           href={s.href}
                           role="menuitem"
-                          className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                          className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                           onClick={() => setServicesOpen(false)}
+                          style={{
+                            backgroundImage: 'none'
+                          }}
+                          onMouseEnter={(e) => {
+                            e.currentTarget.style.backgroundImage = 'var(--eo-primary-gradient)';
+                            e.currentTarget.style.color = 'white';
+                          }}
+                          onMouseLeave={(e) => {
+                            e.currentTarget.style.backgroundImage = 'none';
+                            e.currentTarget.style.color = '';
+                          }}
+                          onFocus={(e) => {
+                            e.currentTarget.style.backgroundImage = 'var(--eo-primary-gradient)';
+                            e.currentTarget.style.color = 'white';
+                          }}
+                          onBlur={(e) => {
+                            e.currentTarget.style.backgroundImage = 'none';
+                            e.currentTarget.style.color = '';
+                          }}
                         >
                           {s.label}
-                          <span className="ml-2 inline-block h-1.5 w-1.5 rounded-full bg-eo-primary/80" aria-hidden="true" />
+                          <span
+                            className="ml-2 inline-block h-1.5 w-1.5 rounded-full"
+                            aria-hidden="true"
+                            style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
+                          />
                         </a>
                       ))}
                     </div>
@@ -185,7 +220,8 @@ export default function Navbar() {
             <div className="hidden md:flex items-center">
               <a
                 href="#get-started"
-                className="inline-flex items-center rounded-lg bg-eo-primary px-4 py-2 text-sm font-semibold text-eo-text shadow-sm hover:bg-orange-500/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
+                className="inline-flex items-center rounded-lg px-4 py-2 text-sm font-semibold text-eo-text shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)] focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-[filter,transform]"
+                style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
               >
                 Get Started
               </a>
@@ -196,7 +232,7 @@ export default function Navbar() {
               <button
                 ref={buttonRef}
                 type="button"
-                className="inline-flex items-center justify-center rounded-md p-2 text-white/80 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                className="inline-flex items-center justify-center rounded-md p-2 text-white/80 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                 aria-controls="mobile-menu"
                 aria-expanded={open}
                 aria-label="Toggle navigation menu"
@@ -237,7 +273,7 @@ export default function Navbar() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
@@ -249,7 +285,7 @@ export default function Navbar() {
               <li className="pt-1">
                 <button
                   type="button"
-                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                   aria-expanded={servicesOpen}
                   aria-controls="mobile-services-panel"
                   onClick={() => setServicesOpen((v) => !v)}
@@ -273,7 +309,15 @@ export default function Navbar() {
                       <a
                         key={s.href}
                         href={s.href}
-                        className="block rounded-md px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                        className="block rounded-md px-3 py-2 text-sm text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
+                        onMouseEnter={(e) => {
+                          e.currentTarget.style.backgroundImage = 'var(--eo-primary-gradient)';
+                          e.currentTarget.style.color = 'white';
+                        }}
+                        onMouseLeave={(e) => {
+                          e.currentTarget.style.backgroundImage = 'none';
+                          e.currentTarget.style.color = '';
+                        }}
                         onClick={() => {
                           setOpen(false);
                           setServicesOpen(false);
@@ -289,7 +333,8 @@ export default function Navbar() {
             <div className="pt-2">
               <a
                 href="#get-started"
-                className="block w-full text-center rounded-lg bg-eo-primary px-4 py-2 text-sm font-semibold text-eo-text shadow-sm hover:bg-orange-500/90 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-colors"
+                className="block w-full text-center rounded-lg px-4 py-2 text-sm font-semibold text-eo-text shadow-sm focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)] focus-visible:ring-offset-2 focus-visible:ring-offset-black transition-[filter,transform]"
+                style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
                 onClick={() => setOpen(false)}
               >
                 Get Started

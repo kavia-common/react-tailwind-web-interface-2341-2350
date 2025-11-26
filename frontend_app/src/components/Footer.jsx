@@ -6,7 +6,7 @@ import React from 'react';
  * - Responsive grid: 1 column on mobile, 2 on sm, 3 on md, and 4 on lg+.
  * - Accessible semantics: <footer> with aria-label, nav landmarks with labels.
  * - Focus-visible rings for links and interactive elements.
- * - Colors: bg-eo-surface background, text white/70, accents in text-eo-primary.
+ * - Colors: bg-eo-surface background, text white/70, accents leveraging the primary gradient.
  */
 // PUBLIC_INTERFACE
 export default function Footer() {
@@ -58,14 +58,21 @@ export default function Footer() {
         <div className="mb-10">
           <a
             href="#home"
-            className="inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 rounded-md"
+            className="inline-flex items-center gap-3 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)] rounded-md"
           >
             <div
               aria-hidden="true"
-              className="h-9 w-9 rounded-lg bg-eo-primary/90 ring-1 ring-white/10 shadow shadow-orange-500/30"
+              className="h-9 w-9 rounded-lg ring-1 ring-white/10 shadow shadow-black/40"
+              style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
             />
             <span className="text-lg font-bold text-white tracking-wide">
-              <span className="text-eo-primary">Electric</span> Orange
+              <span
+                className="bg-clip-text text-transparent"
+                style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
+              >
+                Electric
+              </span>{' '}
+              Orange
             </span>
           </a>
           <p className="mt-3 max-w-2xl text-sm text-white/70">
@@ -87,7 +94,7 @@ export default function Footer() {
                   <li key={link.label}>
                     <a
                       href={link.href}
-                      className="text-sm text-white/70 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 focus-visible:ring-offset-2 focus-visible:ring-offset-black px-1 -mx-1"
+                      className="text-sm text-white/70 hover:text-white transition-colors rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)] focus-visible:ring-offset-2 focus-visible:ring-offset-black px-1 -mx-1"
                     >
                       {link.label}
                     </a>
@@ -110,7 +117,7 @@ export default function Footer() {
                     <a
                       href={s.href}
                       aria-label={s.label}
-                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                      className="inline-flex h-9 w-9 items-center justify-center rounded-md bg-white/5 text-white/80 hover:bg-white/10 hover:text-white transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                     >
                       <Icon className="h-5 w-5" />
                     </a>
@@ -129,19 +136,19 @@ export default function Footer() {
           <div className="flex items-center gap-4 text-xs">
             <a
               href="#privacy"
-              className="text-white/70 hover:text-white rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 px-1 -mx-1"
+              className="text-white/70 hover:text-white rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)] px-1 -mx-1"
             >
               Privacy
             </a>
             <a
               href="#terms"
-              className="text-white/70 hover:text-white rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 px-1 -mx-1"
+              className="text-white/70 hover:text-white rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)] px-1 -mx-1"
             >
               Terms
             </a>
             <a
               href="#cookies"
-              className="text-white/70 hover:text-white rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 px-1 -mx-1"
+              className="text-white/70 hover:text-white rounded focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)] px-1 -mx-1"
             >
               Cookies
             </a>
@@ -163,7 +170,7 @@ function TwIcon({ className = '' }) {
       fill="currentColor"
       aria-hidden="true"
     >
-      <path d="M22.162 5.656c-.743.33-1.541.553-2.379.653a4.154 4.154 0 0 0 1.822-2.29 8.27 8.27 0 0 1-2.63 1.004 4.136 4.136 0 0 0-7.04 3.77A11.74 11.74 0 0 1 3.151 4.7a4.128 4.128 0 0 0 1.28 5.517 4.106 4.106 0 0 1-1.872-.517v.05a4.136 4.136 0 0 0 3.316 4.055 4.153 4.153 0 0 1-1.866.071 4.138 4.138 0 0 0 3.864 2.872A8.297 8.297 0 0 1 2 18.407a11.72 11.72 0 0 0 6.349 1.862c7.62 0 11.786-6.314 11.786-11.787 0-.18-.004-.357-.012-.534a8.413 8.413 0 0 0 2.04-2.146l-.001-.146z" />
+      <path d="M22.162 5.656c-.743.33-1.541.553-2.379.653a4.154 4.154 0 0 0 1.822-2.29 8.27 8.27 0 0 1-2.63 1.004 4.136 4.136 0 0 0-7.04 3.77A11.74 11.74 0 0 1 3.151 4.7a4.128 4.128 0 0 0 1.28 5.517 4.106 4.106 0 0 1-1.872-.517v.05a4.136 4.136 0 0 0 3.316 4.055 4.153 4.153 0 0 1-1.866.071 4.138 4.138 0 0 0 3.864 2.872A8.297 8.297 0  0 1 2 18.407a11.72 11.72 0 0 0 6.349 1.862c7.62 0 11.786-6.314 11.786-11.787 0-.18-.004-.357-.012-.534a8.413 8.413 0 0 0 2.04-2.146l-.001-.146z" />
     </svg>
   );
 }

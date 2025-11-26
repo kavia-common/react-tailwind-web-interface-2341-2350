@@ -24,6 +24,7 @@ module.exports = {
           text: 'var(--eo-text)'
         }
       }
+      // Note: Gradient provided via CSS utility .eo-gradient using --eo-primary-gradient
     }
   },
   plugins: []

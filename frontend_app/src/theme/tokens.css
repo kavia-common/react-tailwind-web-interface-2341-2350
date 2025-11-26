@@ -7,6 +7,9 @@
   --eo-bg: #000000;        /* Black background */
   --eo-surface: #1F2937;   /* Slate-800 surface */
   --eo-text: #FFFFFF;      /* White text */
+
+  /* Primary gradient token: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%) */
+  --eo-primary-gradient: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
 }
 
 /* Optional utility bridge classes (useful until full Tailwind adoption) */
@@ -18,3 +21,9 @@
 .eo-success { color: var(--eo-success); }
 .eo-error { color: var(--eo-error); }
 .eo-border { border-color: var(--eo-surface); }
+
+/* PUBLIC_INTERFACE
+   Gradient utility: apply as a background image while preserving other layers. */
+.eo-gradient {
+  background-image: var(--eo-primary-gradient);
+}
