@@ -8,8 +8,14 @@
   --eo-surface: #1F2937;   /* Slate-800 surface */
   --eo-text: #FFFFFF;      /* White text */
 
-  /* Primary gradient token: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%) */
+  /* PUBLIC_INTERFACE
+     Primary gradient token for brand surfaces and overlays.
+     Value: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%) */
   --eo-primary-gradient: linear-gradient(45deg, #af2497 10%, #902d9a 20%, #1840a0 100%);
+
+  /* Derived accessibility helpers (do not hardcode in components) */
+  --eo-on-gradient: #ffffff; /* Text color placed on gradient surfaces */
+  --eo-on-surface: #ffffff;  /* Text color on surface */
 }
 
 /* Optional utility bridge classes (useful until full Tailwind adoption) */
@@ -24,6 +30,9 @@
 
 /* PUBLIC_INTERFACE
    Gradient utility: apply as a background image while preserving other layers. */
-.eo-gradient {
-  background-image: var(--eo-primary-gradient);
-}
+.eo-gradient { background-image: var(--eo-primary-gradient); }
+
+/* PUBLIC_INTERFACE
+   Utility to ensure accessible text color on gradient backgrounds. */
+.eo-on-gradient { color: var(--eo-on-gradient); }
+.eo-on-surface { color: var(--eo-on-surface); }

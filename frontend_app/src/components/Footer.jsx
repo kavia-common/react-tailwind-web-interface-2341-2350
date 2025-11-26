@@ -50,8 +50,12 @@ export default function Footer() {
 
   return (
     <footer
-      className="bg-eo-surface text-white/70 border-t border-white/10"
+      className="text-white/80 border-t border-white/10 eo-on-gradient"
       aria-label="Site footer"
+      style={{
+        backgroundImage: 'var(--eo-primary-gradient)',
+        backgroundColor: 'rgba(0,0,0,0.15)'
+      }}
     >
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 py-10">
         {/* Top: Brand and short description */}

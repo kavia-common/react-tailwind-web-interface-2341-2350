@@ -15,5 +15,6 @@
     @apply bg-black text-white antialiased;
     background-color: var(--eo-bg);
     color: var(--eo-text);
+    /* Gradient is applied per-surface via .eo-gradient to keep readability control */
   }
 }

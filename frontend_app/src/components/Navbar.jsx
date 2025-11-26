@@ -101,7 +101,7 @@ export default function Navbar() {
       <nav
         role="navigation"
         aria-label="Main navigation"
-        className="fixed top-0 inset-x-0 z-50 border-b border-white/10 text-eo-text backdrop-blur"
+        className="fixed top-0 inset-x-0 z-50 border-b border-white/10 text-eo-text backdrop-blur eo-on-gradient"
         style={{
           backgroundImage: 'var(--eo-primary-gradient)',
           // Keep slight translucency for sticky readability; rely on blur
@@ -177,7 +177,7 @@ export default function Navbar() {
                     ref={servicesMenuRef}
                     role="menu"
                     aria-labelledby="services-button"
-                    className="absolute left-0 top-full mt-2 w-52 rounded-lg border border-white/10 backdrop-blur shadow-xl shadow-black/40 ring-1 ring-white/10 overflow-hidden hidden md:block"
+                    className="absolute left-0 top-full mt-2 w-52 rounded-lg border border-white/10 backdrop-blur shadow-xl shadow-black/40 ring-1 ring-white/10 overflow-hidden hidden md:block eo-on-gradient"
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
                     style={{
@@ -259,7 +259,7 @@ export default function Navbar() {
           ref={menuRef}
           className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
             open ? 'max-h-[28rem] opacity-100' : 'max-h-0 opacity-0'
-          } backdrop-blur`}
+          } backdrop-blur eo-on-gradient`}
           style={{
             backgroundImage: 'var(--eo-primary-gradient)',
             backgroundColor: 'rgba(0,0,0,0.2)'
@@ -303,9 +303,8 @@ export default function Navbar() {
                   className={`overflow-hidden transition-all ${servicesOpen ? 'max-h-60' : 'max-h-0'}`}
                 >
                   <div
-                    className="mt-1 space-y-1 rounded-lg border border-white/10 backdrop-blur-sm p-2"
+                    className="mt-1 space-y-1 rounded-lg border border-white/10 backdrop-blur-sm p-2 eo-on-gradient eo-gradient"
                     style={{
-                      backgroundImage: 'var(--eo-primary-gradient)',
                       backgroundColor: 'rgba(0,0,0,0.25)'
                     }}
                   >

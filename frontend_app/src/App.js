@@ -14,7 +14,7 @@ import Footer from './components/Footer';
  */
 function App() {
   return (
-    <div className="min-h-screen flex flex-col bg-eo-bg text-eo-text">
+    <div className="min-h-screen flex flex-col text-eo-text eo-gradient" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
       <Navbar />
       <main id="main-content" className="flex-1">
         {/* Hero/Carousel section */}

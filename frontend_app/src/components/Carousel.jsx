@@ -145,7 +145,7 @@ export default function Carousel({
 
   // Derived classes
   const containerClasses =
-    'relative w-full overflow-hidden rounded-2xl shadow-xl bg-eo-surface text-eo-text ring-1 ring-white/10';
+    'relative w-full overflow-hidden rounded-2xl shadow-xl text-eo-text ring-1 ring-white/10';
   const indicatorButtonClasses =
     'w-2.5 h-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(175,36,151,0.9)]';
 
@@ -206,7 +206,7 @@ export default function Carousel({
                     draggable="false"
                   />
                   {/* Darkening overlay for readability */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/45 to-black/80" />
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/25 via-black/50 to-black/80" />
                   {/* Primary gradient overlay for accent */}
                   <div
                     className="absolute inset-0 mix-blend-overlay"
@@ -217,19 +217,19 @@ export default function Carousel({
               ) : (
                 // Pure gradient background when no image is supplied
                 <div
-                  className="absolute inset-0"
-                  style={{ backgroundImage: 'var(--eo-primary-gradient)' }}
+                  className="absolute inset-0 eo-gradient"
+                  style={{ backgroundColor: 'rgba(0,0,0,0.15)' }}
                 />
               )}
 
               {/* Foreground content */}
-              <div className="relative z-10 h-full w-full p-6 sm:p-8 md:p-10 flex items-end">
+              <div className="relative z-10 h-full w-full p-6 sm:p-8 md:p-10 flex items-end eo-on-gradient">
                 <div className="max-w-3xl">
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.5)]">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-[0_2px_8px_rgba(0,0,0,0.55)]">
                     {slide.title}
                   </h3>
                   {slide.subtitle && (
-                    <p className="mt-2 text-sm sm:text-base md:text-lg text-white/90">
+                    <p className="mt-2 text-sm sm:text-base md:text-lg text-white/95">
                       {slide.subtitle}
                     </p>
                   )}
@@ -252,7 +252,7 @@ export default function Carousel({
                 className={`${indicatorButtonClasses} ${
                   active
                     ? 'bg-white shadow [box-shadow:0_0_0_3px_rgba(24,64,160,0.5)] scale-110'
-                    : 'bg-white/40 hover:bg-white/70'
+                    : 'bg-white/60 hover:bg-white/80'
                 } transition-transform`}
                 aria-label={`Go to slide ${idx + 1}`}
                 aria-current={active ? 'true' : undefined}
