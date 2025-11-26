@@ -101,7 +101,12 @@ export default function Navbar() {
       <nav
         role="navigation"
         aria-label="Main navigation"
-        className="fixed top-0 inset-x-0 z-50 border-b border-white/10 bg-eo-surface/80 backdrop-blur supports-[backdrop-filter]:bg-eo-surface/60 text-eo-text"
+        className="fixed top-0 inset-x-0 z-50 border-b border-white/10 text-eo-text backdrop-blur"
+        style={{
+          backgroundImage: 'var(--eo-primary-gradient)',
+          // Keep slight translucency for sticky readability; rely on blur
+          backgroundColor: 'rgba(0,0,0,0.1)',
+        }}
       >
         <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="flex h-16 items-center justify-between">
@@ -130,7 +135,7 @@ export default function Navbar() {
                   <li key={item.href}>
                     <a
                       href={item.href}
-                      className="text-sm font-medium text-white/80 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(24,64,160,0.9)] focus-visible:ring-offset-black transition-colors"
+                      className="text-sm font-medium text-white/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-[rgba(24,64,160,0.9)] focus-visible:ring-offset-black transition-colors"
                     >
                       {item.label}
                     </a>
@@ -143,14 +148,17 @@ export default function Navbar() {
                     ref={servicesBtnRef}
                     id="services-button"
                     type="button"
-                    className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-sm font-medium text-white/85 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
+                    className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-sm font-medium text-white/90 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                     aria-haspopup="menu"
                     aria-expanded={servicesOpen}
                     aria-controls="services-menu"
                     onClick={() => setServicesOpen((v) => !v)}
                     onMouseEnter={() => setServicesOpen(true)}
                     onFocus={() => setServicesOpen(true)}
-                    style={{ backgroundImage: servicesOpen ? 'var(--eo-primary-gradient)' : 'none', backgroundColor: servicesOpen ? 'transparent' : 'transparent' }}
+                    style={{
+                      backgroundColor: servicesOpen ? 'rgba(255,255,255,0.08)' : 'transparent',
+                      backgroundImage: 'none'
+                    }}
                   >
                     Services
                     <svg
@@ -169,10 +177,14 @@ export default function Navbar() {
                     ref={servicesMenuRef}
                     role="menu"
                     aria-labelledby="services-button"
-                    className="absolute left-0 top-full mt-2 w-52 rounded-lg border border-white/10 bg-eo-surface/90 backdrop-blur shadow-xl shadow-black/40 ring-1 ring-white/10 overflow-hidden hidden md:block"
+                    className="absolute left-0 top-full mt-2 w-52 rounded-lg border border-white/10 backdrop-blur shadow-xl shadow-black/40 ring-1 ring-white/10 overflow-hidden hidden md:block"
                     onMouseEnter={() => setServicesOpen(true)}
                     onMouseLeave={() => setServicesOpen(false)}
-                    style={{ display: servicesOpen ? 'block' : 'none' }}
+                    style={{
+                      display: servicesOpen ? 'block' : 'none',
+                      backgroundImage: 'var(--eo-primary-gradient)',
+                      backgroundColor: 'rgba(0,0,0,0.2)'
+                    }}
                   >
                     <div className="p-1">
                       {servicesItems.map((s) => (
@@ -180,27 +192,9 @@ export default function Navbar() {
                           key={s.href}
                           href={s.href}
                           role="menuitem"
-                          className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
+                          className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-white/95 hover:bg-white/10 focus:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                           onClick={() => setServicesOpen(false)}
-                          style={{
-                            backgroundImage: 'none'
-                          }}
-                          onMouseEnter={(e) => {
-                            e.currentTarget.style.backgroundImage = 'var(--eo-primary-gradient)';
-                            e.currentTarget.style.color = 'white';
-                          }}
-                          onMouseLeave={(e) => {
-                            e.currentTarget.style.backgroundImage = 'none';
-                            e.currentTarget.style.color = '';
-                          }}
-                          onFocus={(e) => {
-                            e.currentTarget.style.backgroundImage = 'var(--eo-primary-gradient)';
-                            e.currentTarget.style.color = 'white';
-                          }}
-                          onBlur={(e) => {
-                            e.currentTarget.style.backgroundImage = 'none';
-                            e.currentTarget.style.color = '';
-                          }}
+                          style={{ backgroundImage: 'none' }}
                         >
                           {s.label}
                           <span
@@ -232,7 +226,7 @@ export default function Navbar() {
               <button
                 ref={buttonRef}
                 type="button"
-                className="inline-flex items-center justify-center rounded-md p-2 text-white/80 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
+                className="inline-flex items-center justify-center rounded-md p-2 text-white hover:text-white hover:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                 aria-controls="mobile-menu"
                 aria-expanded={open}
                 aria-label="Toggle navigation menu"
@@ -265,7 +259,11 @@ export default function Navbar() {
           ref={menuRef}
           className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
             open ? 'max-h-[28rem] opacity-100' : 'max-h-0 opacity-0'
-          }`}
+          } backdrop-blur`}
+          style={{
+            backgroundImage: 'var(--eo-primary-gradient)',
+            backgroundColor: 'rgba(0,0,0,0.2)'
+          }}
         >
           <div className="px-4 pb-4 pt-2 space-y-2">
             <ul className="space-y-1">
@@ -273,7 +271,7 @@ export default function Navbar() {
                 <li key={item.href}>
                   <a
                     href={item.href}
-                    className="block rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
+                    className="block rounded-md px-3 py-2 text-base font-medium text-white/95 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                     onClick={() => setOpen(false)}
                   >
                     {item.label}
@@ -304,20 +302,18 @@ export default function Navbar() {
                   id="mobile-services-panel"
                   className={`overflow-hidden transition-all ${servicesOpen ? 'max-h-60' : 'max-h-0'}`}
                 >
-                  <div className="mt-1 space-y-1 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm p-2">
+                  <div
+                    className="mt-1 space-y-1 rounded-lg border border-white/10 backdrop-blur-sm p-2"
+                    style={{
+                      backgroundImage: 'var(--eo-primary-gradient)',
+                      backgroundColor: 'rgba(0,0,0,0.25)'
+                    }}
+                  >
                     {servicesItems.map((s) => (
                       <a
                         key={s.href}
                         href={s.href}
-                        className="block rounded-md px-3 py-2 text-sm text-white/95 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
-                        onMouseEnter={(e) => {
-                          e.currentTarget.style.backgroundImage = 'var(--eo-primary-gradient)';
-                          e.currentTarget.style.color = 'white';
-                        }}
-                        onMouseLeave={(e) => {
-                          e.currentTarget.style.backgroundImage = 'none';
-                          e.currentTarget.style.color = '';
-                        }}
+                        className="block rounded-md px-3 py-2 text-sm text-white/95 hover:bg-white/10 focus:bg-white/10 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[rgba(24,64,160,0.9)]"
                         onClick={() => {
                           setOpen(false);
                           setServicesOpen(false);
