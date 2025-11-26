@@ -3,6 +3,7 @@ import logo from './logo.svg';
 import './App.css';
 import Navbar from './components/Navbar';
 import Carousel from './components/Carousel';
+import Footer from './components/Footer';
 
 // PUBLIC_INTERFACE
 function App() {
@@ -52,6 +53,7 @@ function App() {
           </a>
         </header>
       </main>
+      <Footer />
     </div>
   );
 }
