@@ -9,25 +9,44 @@ export default function Navbar() {
    * - Brand area on the left, links center/left-aligned on md+, and a CTA on the right.
    * - Collapsible mobile menu with animated height/opacity and keyboard accessibility.
    * - Includes a skip-to-content link for keyboard users.
+   * - Adds a "Services" dropdown with accessible interactions (hover/focus on desktop, click on mobile),
+   *   close on outside click and ESC, and EO styling with rounded panel and subtle shadow.
    */
   const [open, setOpen] = useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
   const menuRef = useRef(null);
   const buttonRef = useRef(null);
+  const servicesBtnRef = useRef(null);
+  const servicesMenuRef = useRef(null);
 
   // Close on escape and when clicking outside
   useEffect(() => {
     function onKeyDown(e) {
       if (e.key === 'Escape') {
+        if (servicesOpen) {
+          setServicesOpen(false);
+          servicesBtnRef.current?.focus();
+          return;
+        }
         setOpen(false);
         // Return focus to the hamburger button for accessibility
         if (buttonRef.current) buttonRef.current.focus();
       }
     }
     function onClickOutside(e) {
-      if (!menuRef.current) return;
-      if (open && !menuRef.current.contains(e.target) && !buttonRef.current?.contains(e.target)) {
-        setOpen(false);
-      }
+      const target = e.target;
+      const clickedOutsideMobile =
+        open &&
+        !menuRef.current?.contains(target) &&
+        !buttonRef.current?.contains(target);
+
+      const clickedOutsideServices =
+        servicesOpen &&
+        !servicesMenuRef.current?.contains(target) &&
+        !servicesBtnRef.current?.contains(target);
+
+      if (clickedOutsideMobile) setOpen(false);
+      if (clickedOutsideServices) setServicesOpen(false);
     }
     document.addEventListener('keydown', onKeyDown);
     document.addEventListener('click', onClickOutside);
@@ -35,7 +54,7 @@ export default function Navbar() {
       document.removeEventListener('keydown', onKeyDown);
       document.removeEventListener('click', onClickOutside);
     };
-  }, [open]);
+  }, [open, servicesOpen]);
 
   const navItems = [
     { label: 'Home', href: '#home' },
@@ -43,6 +62,30 @@ export default function Navbar() {
     { label: 'Pricing', href: '#pricing' },
     { label: 'Contact', href: '#contact' },
   ];
+
+  const servicesItems = [
+    { label: 'Design', href: '#design' },
+    { label: 'Development', href: '#development' },
+    { label: 'Consulting', href: '#consulting' },
+  ];
+
+  // Keyboard helpers for services button/menu (desktop)
+  function handleServicesKeyDown(e) {
+    if (e.key === 'Escape') {
+      e.stopPropagation();
+      setServicesOpen(false);
+      servicesBtnRef.current?.focus();
+    }
+    if ((e.key === 'Enter' || e.key === ' ') && e.currentTarget === servicesBtnRef.current) {
+      e.preventDefault();
+      setServicesOpen((v) => !v);
+    }
+    if (e.key === 'ArrowDown' && servicesOpen) {
+      e.preventDefault();
+      const first = servicesMenuRef.current?.querySelector('a');
+      first?.focus();
+    }
+  }
 
   return (
     <>
@@ -63,8 +106,10 @@ export default function Navbar() {
           <div className="flex h-16 items-center justify-between">
             {/* Brand */}
             <div className="flex items-center gap-3">
-              <div className="h-8 w-8 rounded-md bg-eo-primary/90 ring-1 ring-white/10 shadow shadow-orange-500/20" aria-hidden="true" />
-              <span className="text-lg font-bold tracking-wide">Brand</span>
+              <div className="h-8 w-8 rounded-md bg-eo-primary/90 ring-1 ring-white/10 shadow shadow-orange-500/30" aria-hidden="true" />
+              <span className="text-lg font-bold tracking-wide">
+                <span className="text-eo-primary">Electric</span> Orange
+              </span>
             </div>
 
             {/* Desktop nav */}
@@ -80,6 +125,59 @@ export default function Navbar() {
                     </a>
                   </li>
                 ))}
+
+                {/* Services dropdown - desktop hover/focus */}
+                <li className="relative" onKeyDown={handleServicesKeyDown}>
+                  <button
+                    ref={servicesBtnRef}
+                    id="services-button"
+                    type="button"
+                    className="inline-flex items-center gap-1 rounded-md px-2 py-1.5 text-sm font-medium text-white/80 hover:text-white hover:bg-white/5 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                    aria-haspopup="menu"
+                    aria-expanded={servicesOpen}
+                    aria-controls="services-menu"
+                    onClick={() => setServicesOpen((v) => !v)}
+                    onMouseEnter={() => setServicesOpen(true)}
+                    onFocus={() => setServicesOpen(true)}
+                  >
+                    Services
+                    <svg
+                      className={`h-4 w-4 transition-transform ${servicesOpen ? 'rotate-180' : ''}`}
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                      aria-hidden="true"
+                    >
+                      <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.585l3.71-3.354a.75.75 0 111.02 1.1l-4.22 3.815a.75.75 0 01-1.02 0L5.25 8.33a.75.75 0 01-.02-1.12z" clipRule="evenodd" />
+                    </svg>
+                  </button>
+
+                  {/* Dropdown menu (desktop) */}
+                  <div
+                    id="services-menu"
+                    ref={servicesMenuRef}
+                    role="menu"
+                    aria-labelledby="services-button"
+                    className="absolute left-0 top-full mt-2 w-52 rounded-lg border border-white/10 bg-eo-surface/90 backdrop-blur shadow-xl shadow-black/40 ring-1 ring-white/10 overflow-hidden hidden md:block"
+                    onMouseEnter={() => setServicesOpen(true)}
+                    onMouseLeave={() => setServicesOpen(false)}
+                    style={{ display: servicesOpen ? 'block' : 'none' }}
+                  >
+                    <div className="p-1">
+                      {servicesItems.map((s) => (
+                        <a
+                          key={s.href}
+                          href={s.href}
+                          role="menuitem"
+                          className="flex items-center justify-between rounded-md px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                          onClick={() => setServicesOpen(false)}
+                        >
+                          {s.label}
+                          <span className="ml-2 inline-block h-1.5 w-1.5 rounded-full bg-eo-primary/80" aria-hidden="true" />
+                        </a>
+                      ))}
+                    </div>
+                  </div>
+                </li>
               </ul>
             </div>
 
@@ -130,7 +228,7 @@ export default function Navbar() {
           id="mobile-menu"
           ref={menuRef}
           className={`md:hidden overflow-hidden transition-all duration-300 ease-out ${
-            open ? 'max-h-96 opacity-100' : 'max-h-0 opacity-0'
+            open ? 'max-h-[28rem] opacity-100' : 'max-h-0 opacity-0'
           }`}
         >
           <div className="px-4 pb-4 pt-2 space-y-2">
@@ -146,6 +244,47 @@ export default function Navbar() {
                   </a>
                 </li>
               ))}
+
+              {/* Mobile Services collapsible */}
+              <li className="pt-1">
+                <button
+                  type="button"
+                  className="flex w-full items-center justify-between rounded-md px-3 py-2 text-base font-medium text-white/90 hover:bg-white/5 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                  aria-expanded={servicesOpen}
+                  aria-controls="mobile-services-panel"
+                  onClick={() => setServicesOpen((v) => !v)}
+                >
+                  <span>Services</span>
+                  <svg
+                    className={`h-5 w-5 transition-transform ${servicesOpen ? 'rotate-180' : ''}`}
+                    viewBox="0 0 20 20"
+                    fill="currentColor"
+                    aria-hidden="true"
+                  >
+                    <path fillRule="evenodd" d="M5.23 7.21a.75.75 0 011.06.02L10 10.585l3.71-3.354a.75.75 0 111.02 1.1l-4.22 3.815a.75.75 0 01-1.02 0L5.25 8.33a.75.75 0 01-.02-1.12z" clipRule="evenodd" />
+                  </svg>
+                </button>
+                <div
+                  id="mobile-services-panel"
+                  className={`overflow-hidden transition-all ${servicesOpen ? 'max-h-60' : 'max-h-0'}`}
+                >
+                  <div className="mt-1 space-y-1 rounded-lg border border-white/10 bg-white/5 backdrop-blur-sm p-2">
+                    {servicesItems.map((s) => (
+                      <a
+                        key={s.href}
+                        href={s.href}
+                        className="block rounded-md px-3 py-2 text-sm text-white/90 hover:bg-white/10 hover:text-white focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500"
+                        onClick={() => {
+                          setOpen(false);
+                          setServicesOpen(false);
+                        }}
+                      >
+                        {s.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              </li>
             </ul>
             <div className="pt-2">
               <a

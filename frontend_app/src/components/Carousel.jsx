@@ -2,21 +2,19 @@ import React, { useEffect, useMemo, useRef, useState, useCallback } from 'react'
 
 /**
  * PUBLIC_INTERFACE
- * Carousel component with auto-advance, hover pause, prev/next, indicators, keyboard navigation, and accessibility.
+ * Carousel component with auto-advance, hover pause, indicators only (no arrows), keyboard navigation, and accessibility.
  * - Accepts optional slides via props; defaults to internal slides array with title, subtitle, and optional background image or gradient.
- * - Auto-advances every ~5 seconds, paused on hover and when document/window not focused or page hidden.
- * - Includes accessible Previous/Next buttons with aria-labels.
- * - Focusable dot indicators to jump to slides, with aria-current for the active slide.
- * - Keyboard navigation: left/right arrows when the carousel container is focused.
+ * - Auto-advances every ~4-5 seconds, paused on hover and when document/window not focused or page hidden.
+ * - Shows only clickable indicators (dots) for manual navigation with aria-current and keyboard focus.
+ * - Keyboard: left/right arrows still work when the carousel is focused.
  * - Announces slide changes via aria-live="polite".
- * - Responsive layout with rounded-xl, shadow, and an overlay gradient if no image.
- * - Exposes className prop for parent spacing/customization.
- * - Cleans up timers and event listeners on unmount.
+ * - Visually enhanced with gradient overlays, rounded corners, subtle motion (opacity/translate/scale).
+ * - Exposes className prop; cleans timers and listeners on unmount.
  */
 export default function Carousel({
   // Optional slides: [{ title, subtitle, image? }]
   slides: slidesProp,
-  autoAdvanceMs = 5000,
+  autoAdvanceMs = 4500,
   className = '',
 }) {
   // Internal default slides if none provided
@@ -64,17 +62,19 @@ export default function Carousel({
   );
 
   const next = useCallback(() => {
-    goTo(current + 1);
-  }, [current, goTo]);
+    setCurrent((c) => (c + 1) % total);
+  }, [total]);
 
   const prev = useCallback(() => {
-    goTo(current - 1);
-  }, [current, goTo]);
+    setCurrent((c) => (c - 1 + total) % total);
+  }, [total]);
 
   // Auto-advance logic with pause on hover, blur, and page visibility
   useEffect(() => {
     const isPageHidden =
-      document.hidden || (typeof document.visibilityState !== 'undefined' && document.visibilityState !== 'visible');
+      document.hidden ||
+      (typeof document.visibilityState !== 'undefined' &&
+        document.visibilityState !== 'visible');
 
     const shouldRun =
       !isHovered && !isPageHidden && document.hasFocus && document.hasFocus();
@@ -86,7 +86,7 @@ export default function Carousel({
 
     if (shouldRun) {
       intervalRef.current = setInterval(() => {
-        setCurrent((c) => (c + 1) % total);
+        next();
       }, autoAdvanceMs);
     }
 
@@ -96,13 +96,12 @@ export default function Carousel({
         intervalRef.current = null;
       }
     };
-  }, [isHovered, total, autoAdvanceMs, isFocused, current]);
+  }, [isHovered, autoAdvanceMs, next]);
 
   // Pause/resume when window focus changes or visibility changes
   useEffect(() => {
     function handleVisibility() {
-      // Re-run effect above by toggling a state update: handled naturally as effect depends on nothing here.
-      // We force an update using setIsFocused(prev => prev) to retrigger effect chain safely
+      // retrigger effect by toggling focus state noop
       setIsFocused((v) => v);
     }
     function handleFocusChange() {
@@ -138,15 +137,15 @@ export default function Carousel({
   useEffect(() => {
     if (!liveRegionRef.current) return;
     const slide = slides[current];
-    const text = `${slide.title || 'Slide'}${slide.subtitle ? ` — ${slide.subtitle}` : ''} (${current + 1} of ${total})`;
+    const text = `${slide.title || 'Slide'}${
+      slide.subtitle ? ` — ${slide.subtitle}` : ''
+    } (${current + 1} of ${total})`;
     liveRegionRef.current.textContent = text;
   }, [current, slides, total]);
 
   // Derived classes
   const containerClasses =
-    'relative w-full overflow-hidden rounded-xl shadow-lg bg-eo-surface text-eo-text';
-  const controlButtonClasses =
-    'inline-flex items-center justify-center rounded-md bg-black/40 hover:bg-black/60 text-white px-3 py-2 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500 transition';
+    'relative w-full overflow-hidden rounded-2xl shadow-xl bg-eo-surface text-eo-text ring-1 ring-white/10';
   const indicatorButtonClasses =
     'w-2.5 h-2.5 rounded-full focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-orange-500';
 
@@ -160,7 +159,6 @@ export default function Carousel({
       onKeyDown={onKeyDown}
       onFocus={() => setIsFocused(true)}
       onBlur={(e) => {
-        // Only set unfocused when focus leaves the entire carousel region
         if (!rootRef.current?.contains(e.relatedTarget)) {
           setIsFocused(false);
         }
@@ -178,6 +176,8 @@ export default function Carousel({
 
       {/* Slides wrapper */}
       <div className="relative h-[320px] sm:h-[380px] md:h-[420px] lg:h-[480px]">
+        {/* gradient accent border glow */}
+        <div className="pointer-events-none absolute inset-0 bg-gradient-to-br from-orange-500/10 via-transparent to-transparent" aria-hidden="true" />
         {slides.map((slide, idx) => {
           const isActive = idx === current;
           return (
@@ -186,8 +186,10 @@ export default function Carousel({
               role="group"
               aria-roledescription="slide"
               aria-label={`${idx + 1} of ${total}`}
-              className={`absolute inset-0 transition-opacity duration-500 ${
-                isActive ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+              className={`absolute inset-0 transition-all duration-700 ease-out ${
+                isActive
+                  ? 'opacity-100 translate-y-0 scale-100'
+                  : 'opacity-0 translate-y-2 scale-[0.98] pointer-events-none'
               }`}
             >
               {/* Background image or gradient */}
@@ -199,8 +201,9 @@ export default function Carousel({
                     className="h-full w-full object-cover"
                     draggable="false"
                   />
-                  {/* Dark gradient overlay for readability */}
-                  <div className="absolute inset-0 bg-gradient-to-b from-black/20 to-black/80" />
+                  {/* EO gradient overlay for readability */}
+                  <div className="absolute inset-0 bg-gradient-to-b from-black/20 via-black/40 to-black/80" />
+                  <div className="absolute inset-0 bg-gradient-to-tr from-orange-500/20 to-transparent mix-blend-screen" aria-hidden="true" />
                 </div>
               ) : (
                 <div className="absolute inset-0 bg-gradient-to-br from-orange-500/20 to-black" />
@@ -209,11 +212,11 @@ export default function Carousel({
               {/* Foreground content */}
               <div className="relative z-10 h-full w-full p-6 sm:p-8 md:p-10 flex items-end">
                 <div className="max-w-3xl">
-                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight">
+                  <h3 className="text-2xl sm:text-3xl md:text-4xl font-extrabold tracking-tight drop-shadow-[0_2px_8px_rgba(249,115,22,0.35)]">
                     {slide.title}
                   </h3>
                   {slide.subtitle && (
-                    <p className="mt-2 text-sm sm:text-base md:text-lg text-white/80">
+                    <p className="mt-2 text-sm sm:text-base md:text-lg text-white/85">
                       {slide.subtitle}
                     </p>
                   )}
@@ -224,52 +227,7 @@ export default function Carousel({
         })}
       </div>
 
-      {/* Controls */}
-      <div className="pointer-events-none absolute inset-0 flex items-center justify-between px-2 sm:px-3">
-        <button
-          type="button"
-          className={`${controlButtonClasses} pointer-events-auto`}
-          onClick={prev}
-          aria-label="Previous slide"
-        >
-          <span aria-hidden="true" className="sr-only sm:not-sr-only sm:mr-2">
-            Previous
-          </span>
-          <svg
-            className="h-5 w-5 sm:h-6 sm:w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" />
-          </svg>
-        </button>
-
-        <button
-          type="button"
-          className={`${controlButtonClasses} pointer-events-auto`}
-          onClick={next}
-          aria-label="Next slide"
-        >
-          <span aria-hidden="true" className="sr-only sm:not-sr-only sm:mr-2">
-            Next
-          </span>
-          <svg
-            className="h-5 w-5 sm:h-6 sm:w-6"
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            aria-hidden="true"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" />
-          </svg>
-        </button>
-      </div>
-
-      {/* Indicators */}
+      {/* Indicators only (no arrows) */}
       <div className="absolute bottom-3 left-0 right-0">
         <div className="flex items-center justify-center gap-2">
           {slides.map((_, idx) => {
@@ -279,8 +237,8 @@ export default function Carousel({
                 key={idx}
                 type="button"
                 className={`${indicatorButtonClasses} ${
-                  active ? 'bg-white' : 'bg-white/40 hover:bg-white/70'
-                }`}
+                  active ? 'bg-white shadow shadow-orange-500/40 scale-110' : 'bg-white/40 hover:bg-white/70'
+                } transition-transform`}
                 aria-label={`Go to slide ${idx + 1}`}
                 aria-current={active ? 'true' : undefined}
                 onClick={() => goTo(idx)}

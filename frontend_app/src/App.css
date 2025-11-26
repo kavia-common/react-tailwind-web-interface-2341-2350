@@ -3,4 +3,5 @@
 }
 
 /* Keep file present; primary styling handled by Tailwind and tokens.css.
-   Remove CRA demo classes to avoid conflicts (App, App-header, App-logo, etc.). */
+   Remove CRA demo classes to avoid conflicts (App, App-header, App-logo, etc.).
+   Tailwind-first approach; avoid overriding component styles here. */
