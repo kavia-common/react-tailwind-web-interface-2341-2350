@@ -1,0 +1,4 @@
+{
+    "command": "npm run test",
+    "working_directory": "/home/kavia/workspace/code-generation/react-tailwind-web-interface-2341-2350/frontend_app"
+}
